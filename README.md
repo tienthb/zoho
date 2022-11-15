@@ -26,7 +26,7 @@ For building and running the application you need:
 6. Go to `Triggers|New...` and set the schedule for check-in. e.g. 9AM every weekday
 7. Create another schedule for check-out. e.g. 5PM every weekday
 8. Go to `Actions|New...`
-    i. `Action: Start a program`
-    ii. `Program/script: {bat file path}`. e.g `C:\repos\zoho\daily.bat`
-    iii. `Start in (optional): {current dir}`. e.g. `C:\repos\zoho`
+  1. Action: Start a program
+  2. Program/script: {bat file path}. e.g `C:\repos\zoho\daily.bat`
+  3. Start in (optional): {current dir}. e.g. `C:\repos\zoho`
 9. Click OK
