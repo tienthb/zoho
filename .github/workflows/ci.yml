@@ -23,11 +23,12 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
           mkdir src/config
-          cd src/config
+          cd src/configW
           touch config.ini
-          echo USERNAME="$USERNAME" >> config.ini
-          echo PASSWORD="$PASSWORD" >> config.ini
-          echo TOTP="$TOTP" >> config.ini
+          echo "[default]" >> config.ini
+          echo ZOHO_USERNAME="$ZOHO_USERNAME" >> config.ini
+          echo ZOHO_PASSWORD="$ZOHO_PASSWORD" >> config.ini
+          echo ZOHO_TOTP="$ZOHO_TOTP" >> config.ini
       # - run: cd $GITHUB_WORKSPACE
       # - run: source .venv/bin/activate
       # - run: pip install -r requirements.txt

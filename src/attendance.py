@@ -23,9 +23,9 @@ class AutoAttendance:
         self.driver = webdriver.Chrome(options=self.options)
         # self.driver = webdriver.Chrome()
         self.driver.get("https://accounts.zoho.com/signin?servicename=Peopleplus&signupurl=https://www.zoho.com/peopleplus/signup.html")
-        self.username = settings.USERNAME
-        self.password = settings.PASSWORD
-        self.totp = settings.TOTP
+        self.username = settings.ZOHO_USERNAME
+        self.password = settings.ZOHO_PASSWORD
+        self.totp = settings.ZOHO_TOTP
         self.today = datetime.utcnow() + timedelta(hours=7)
         self.today_str = self.today.strftime("%a, %d/%m/%Y")
 
