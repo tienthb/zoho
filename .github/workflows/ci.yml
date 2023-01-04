@@ -9,6 +9,11 @@ jobs:
     runs-on: ["self-hosted", "linux", "x64"]
     steps:
       - uses: actions/checkout@v3
-      - run: cd $GITHUB_WORKSPACE
-      - run: source .venv/bin/activate
-      - run: pip install -r requirements.txt
+      - run: |
+          echo ${{ github.workspace }}
+          echo $GITHUB_WORKSPACE
+          cd $GITHUB_WORKSPACE
+          ls
+      # - run: cd $GITHUB_WORKSPACE
+      # - run: source .venv/bin/activate
+      # - run: pip install -r requirements.txt
