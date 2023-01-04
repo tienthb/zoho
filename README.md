@@ -7,8 +7,7 @@ Check-in/check-out in Zoho
 For building and running the application you need:
 
 - [Python 3.8.10](https://www.python.org/downloads/release/python-3810/)
-- [selenium](https://pypi.org/project/selenium/)
-- [pyotp](https://pypi.org/project/pyotp/)
+- [pipenv](https://www.jetbrains.com/help/pycharm/pipenv.html)
 
 ## Prerequisite
 
