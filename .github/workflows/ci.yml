@@ -17,13 +17,13 @@ jobs:
           pip install -r requirements.txt
       - name: Create config
         env: 
-          USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          TOTP: ${{ secrets.TOTP }}
+          USERNAME: ${{ secrets.ZOHO_USERNAME }}
+          PASSWORD: ${{ secrets.ZOHO_PASSWORD }}
+          TOTP: ${{ secrets.ZOHO_TOTP }}
         run: |
           cd $GITHUB_WORKSPACE
           mkdir src/config
-          cd src/configW
+          cd src/config
           touch config.ini
           echo "[default]" >> config.ini
           echo ZOHO_USERNAME="$ZOHO_USERNAME" >> config.ini
