@@ -10,10 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          echo ${{ github.workspace }}
-          echo $GITHUB_WORKSPACE
           cd $GITHUB_WORKSPACE
-          ls
+          source .venv/bin/activate
+          pip install -r requirements.txt
       # - run: cd $GITHUB_WORKSPACE
       # - run: source .venv/bin/activate
       # - run: pip install -r requirements.txt
