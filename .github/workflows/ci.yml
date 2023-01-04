@@ -9,6 +9,6 @@ jobs:
     runs-on: ["self-hosted", "linux", "x64"]
     steps:
       - uses: actions/checkout@v3
-      - run: cd zoho/zoho
+      - run: cd $GITHUB_WORKSPACE
       - run: source .venv/bin/activate
       - run: pip install -r requirements.txt
