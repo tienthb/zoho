@@ -28,7 +28,7 @@ jobs:
           echo "[default]" >> config.ini
           echo ZOHO_USERNAME='${{ secrets.ZOHO_USERNAME }}' >> config.ini
           echo ZOHO_PASSWORD='${{ secrets.ZOHO_PASSWORD }}' >> config.ini
-          echo ZOHO_TOTP='${{ secrets.ZOHO_TOTP }}'' >> config.ini
+          echo ZOHO_TOTP='${{ secrets.ZOHO_TOTP }}' >> config.ini
       # - run: cd $GITHUB_WORKSPACE
       # - run: source .venv/bin/activate
       # - run: pip install -r requirements.txt
