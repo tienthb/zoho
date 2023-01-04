@@ -44,18 +44,16 @@ class AutoAttendance:
 
         # not trust browser
         try:
-            logger.info("Not trust")
+            logger.info("Skip trusted browser")
             WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".btn.grey.trustdevice.notnowbtn"))).click()
         except TimeoutException:
             pass
 
         try:
-            logger.info("Skip zoho one")
+            logger.info("Skip install zoho one")
             WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.CLASS_NAME, "secoundary_btn"))).click()
         except TimeoutException:
             pass
-            
-
         logger.info("Login successfully")
 
     def _logout(self):
@@ -98,15 +96,22 @@ class AutoAttendance:
                 df = df.drop([8, 9], axis=1)
                 df.columns = header
                 today_status = df.loc[df["Date"] == self.today_str]
-                return today_status
+                if today_status is not None:
+                    break
             except:
                 attempt += 1
                 time.sleep(2)
+        if attempt == 3 and today_status is None:
+            logger.info("Failed to parse attendance table")
+        else:
+            logger.info("Attendance table parsed successfully")
+            logger.info(today_status)
+        return today_status
 
     def attendance(self):
         self._login()
         today_status = self._parse_attendance_table()
-        print(today_status)
+        # print(today_status)
         is_day_off = self._is_day_off(today_status)
 
         if is_day_off:
