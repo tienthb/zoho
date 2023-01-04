@@ -69,6 +69,7 @@ class AutoAttendance:
         return False
 
     def _parse_attendance_table(self):
+        today_status = None
         attempt = 0
         while attempt < 3:
             try:
@@ -98,6 +99,7 @@ class AutoAttendance:
                 today_status = df.loc[df["Date"] == self.today_str]
                 if today_status is not None:
                     break
+                time.sleep(5)
             except:
                 attempt += 1
                 time.sleep(2)
@@ -111,7 +113,6 @@ class AutoAttendance:
     def attendance(self):
         self._login()
         today_status = self._parse_attendance_table()
-        # print(today_status)
         is_day_off = self._is_day_off(today_status)
 
         if is_day_off:
