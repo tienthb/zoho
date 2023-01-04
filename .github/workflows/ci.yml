@@ -1,0 +1,11 @@
+name: ci-zoho-attendance
+on: 
+  push:
+    branches: 
+      - main
+
+jobs:
+  pull-new-code:
+    runs-on: ["self-hosted", "linux", "x64"]
+    steps:
+      - uses: actions/checkout@v3
