@@ -72,18 +72,26 @@ class AutoAttendance:
     def _parse_attendance_table(self):
         today_status = None
         attempt = 0
+        driver = self.driver
         while attempt < 3:
             logger.info("Attempt %s" % attempt)
             try:
-                WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "zp_maintab_attendance")))
-                WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.ID, "zp_maintab_attendance"))).click()
-                WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.ID, "zp_t_attendance_entry_tabularview"))).click()
-                WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.ID, "ZPAtt_tabView")))
-                WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.TAG_NAME, "tr")))
-                attendance_table = self.driver.find_element(By.ID, "ZPAtt_tabView")
-                logger.info(attendance_table.text)
+                WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "zp_maintab_attendance")))
+                driver.find_element(By.ID, "zp_maintab_attendance").click()
+                logger.info("Click Attendance tab")
+                
+                WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "zp_t_attendance_entry_tabularview")))
+                driver.find_element(By.ID, "zp_t_attendance_entry_tabularview").click()
+                logger.info("Click Tabular View tab")
+                # WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "zp_t_attendance_entry_tabularview"))).click()
+                
+                WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, "ZPAtt_tabView")))
+                attendance_table = driver.find_element(By.ID, "ZPAtt_tabView")
+                logger.info("Located attendance table")
+
+                # WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.TAG_NAME, "tr")))
                 rows = attendance_table.find_elements(By.TAG_NAME, "tr")
-                logger.info(rows.text)
+                logger.info("Parse to dataframe")
                 cells = []
                 for row in rows:
                     cells.append(row.find_elements(By.TAG_NAME, "td"))
@@ -101,18 +109,26 @@ class AutoAttendance:
                 df = pd.DataFrame(df)
                 df = df.drop([8, 9], axis=1)
                 df.columns = header
-                logger.info(df)
+                df.to_csv(f"/home/tientran/dev/status_{attempt}.csv", index=False)
+                # logger.info(len(df))
                 today_status = df.loc[df["Date"] == self.today_str]
-                if today_status is not None:
+                today_status.to_csv(f"/home/tientran/dev/today_status_{attempt}.csv", index=False)
+                if len(today_status) > 0:
                     break
                 else:
+                    attempt += 1
                     pass
-            except Exception as e:
+            except TimeoutException as e:
+                logger.info("Timeout Error", e)
                 attempt += 1
                 time.sleep(5)
+            except Exception as e:
+                logger.info("Error", e)
+                attempt += 1
+                time.sleep(5)
+
         if attempt == 3 and today_status is None:
             raise ValueError("Failed to parse attendance table")
-
         else:
             logger.info("Attendance table parsed successfully")
             logger.info(today_status)
