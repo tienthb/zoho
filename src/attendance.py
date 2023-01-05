@@ -54,6 +54,7 @@ class AutoAttendance:
             WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.CLASS_NAME, "secoundary_btn"))).click()
         except TimeoutException:
             pass
+        time.sleep(10)
         logger.info("Login successfully")
 
     def _logout(self):
@@ -72,13 +73,17 @@ class AutoAttendance:
         today_status = None
         attempt = 0
         while attempt < 3:
+            logger.info("Attempt %s" % attempt)
             try:
+                WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "zp_maintab_attendance")))
                 WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.ID, "zp_maintab_attendance"))).click()
                 WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.ID, "zp_t_attendance_entry_tabularview"))).click()
                 WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.ID, "ZPAtt_tabView")))
                 WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.TAG_NAME, "tr")))
                 attendance_table = self.driver.find_element(By.ID, "ZPAtt_tabView")
+                logger.info(attendance_table.text)
                 rows = attendance_table.find_elements(By.TAG_NAME, "tr")
+                logger.info(rows.text)
                 cells = []
                 for row in rows:
                     cells.append(row.find_elements(By.TAG_NAME, "td"))
@@ -96,15 +101,18 @@ class AutoAttendance:
                 df = pd.DataFrame(df)
                 df = df.drop([8, 9], axis=1)
                 df.columns = header
+                logger.info(df)
                 today_status = df.loc[df["Date"] == self.today_str]
                 if today_status is not None:
                     break
-                time.sleep(5)
-            except:
+                else:
+                    pass
+            except Exception as e:
                 attempt += 1
-                time.sleep(2)
+                time.sleep(5)
         if attempt == 3 and today_status is None:
-            logger.info("Failed to parse attendance table")
+            raise ValueError("Failed to parse attendance table")
+
         else:
             logger.info("Attendance table parsed successfully")
             logger.info(today_status)
