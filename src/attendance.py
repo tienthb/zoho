@@ -122,8 +122,8 @@ class AutoAttendance:
                 logger.info("Timeout Error", e)
                 attempt += 1
                 time.sleep(5)
-            except Exception as e:
-                logger.info("Error", e)
+            except KeyError as e:
+                logger.info("Empty dataframe")
                 attempt += 1
                 time.sleep(5)
 

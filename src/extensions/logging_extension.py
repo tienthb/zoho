@@ -1,6 +1,7 @@
 from logging.handlers import TimedRotatingFileHandler
 import logging
 import sys
+import os
 
 logging.basicConfig(
     level=logging.INFO,
@@ -13,5 +14,7 @@ logging.basicConfig(
 
 
 def get_logger(name):
+    file_name = os.getcwd() + name
     logger = logging.getLogger(name)
+    logging.basicConfig(filename=file_name)
     return logger
